@@ -1,0 +1,5 @@
+---
+mcjar: /home/minecraft/bukkit/minecraft_server.jar
+screentitle: minecraft
+tipfile: /home/minecraft/bukkit/tips.text
+tipprefix: 'Tip:'

@@ -110,7 +110,7 @@ This is the initial release with few features. More will be added later.
 
 	-C or -cmd:
 
-		Accepts a command pipted to it,  or prompts you for a command to run on the console.
+		Accepts a command piped to it,  or prompts you for a command to run on the console.
 
 		EXAMPLE:
 
@@ -148,7 +148,7 @@ This is the initial release with few features. More will be added later.
 
 	mcdo/tips.txt
 
-		Mcdo stores tip data here by default. One tip per line. #Commens work
+		Mcdo stores tip data here by default. One tip per line. #Comments work
 
 	README
 
@@ -191,11 +191,18 @@ use Cwd qw/ getcwd /;
 ### Functions ####
 
 sub mcsay {
+
+	#Slurping blindly into $stdin from the argument list
+
     my $stdin = shift;
+
+	#If $stdin is not defined,  we prompt the user to define it
+
 	if(!$stdin){
 	print "Please enter your message:\n";
     $stdin = <STDIN>;
 }
+	#Push the message to the consule or we get a warning
     $main::screen->send_command( 'stuff', "say $stdin" ) or carp $!;
 }
 
@@ -203,9 +210,11 @@ sub readme{
 	print "Reading Documentation from $0\n";
 	my $pod = Pod::Readme->new() or croak "Failed creating readme:\n$!\n";
 	print "Exporting to README\n";
+	#Reading the documentation from itself,  pushing all the documentation into the README file
 	$pod->parse_from_file("$0", 'README') or croak "Failed to parse README:\n$!\n";;
 	print "Readme Export Done\nPrinting Readme\n------------------------\n";
 	open README,  "<README";
+	#Slurp the file into memory and print it all out
 	my @readme = <README>;
 	print foreach(@readme);
 }

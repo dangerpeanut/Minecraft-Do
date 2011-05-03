@@ -85,7 +85,7 @@ Notes
 
             -C or -cmd:
 
-                    Accepts a command pipted to it,  or prompts you for a command to run on the console.
+                    Accepts a command piped to it,  or prompts you for a command to run on the console.
 
                     EXAMPLE:
 
@@ -122,14 +122,14 @@ Notes
 
             mcdo/tips.txt
 
-                    Mcdo stores tip data here by default. One tip per line. #Commens work
+                    Mcdo stores tip data here by default. One tip per line. #Comments work
 
             README
 
                     This spiffy README file.
 
     Configuration Options
-            Here is an overview of all the configuration options that are used in mcdo/config.yaml.  If you cannot tell,  this is a YAML file. Use only YAML syntax.
+            Here is an overview of all the configuration options that are used in mcdo/config.yml.  If you cannot tell,  this is a YAML file. Use only YAML syntax.
 
             mcjar:
 

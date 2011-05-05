@@ -31,7 +31,7 @@ use Pod::Readme;
 			YAML::Syck
 			YAML::Old
 			YAML::Tiny
-		Term::GnuScreeni
+		Term::GnuScreen
 		Data::Dumper
 	Gnu Screen Installed on local system
 
@@ -88,11 +88,11 @@ This is the initial release with few features. More will be added later.
 
 =head2 Installation
 
-	The biggest part of installing Minecraft Do is running minecraft properly inside of a screen session. Please ensure that you have GNU Screen installed on this machine: http://www.gnu.org/software/screen/
+	The biggest part of installing Minecraft Do is running minecraft properly inside of a screen session. Please ensure that you have GNU Screen installed on your server: http://www.gnu.org/software/screen/
 
 	You will also need to install the Perl modules listed in the Requirements above. You can do this using cpan: http://cpan.org
 
-	Minecraft needs to be started with a session name. An example of this is "screen -S NAMEHERE". This session name should be identical to the "screentitle" configuration option. It should also be different from other session names in use. Keep this in mind.
+	GnuScreen needs to be started with a session name. An example of this is "screen -S NAMEHERE". This session name should be identical to the "screentitle" configuration option. It should also be different from other session names in use. Keep this in mind.
 
 	Minecraft Do should not need to be anywhere near your minecraft installation if screen is setup. You can now move onto configuring Minecraft Do. Open config.yml under the mcdo folder. Configure the screentitle to match the session name you are using and anything else you like.
 
@@ -210,11 +210,15 @@ sub readme{
 	print "Reading Documentation from $0\n";
 	my $pod = Pod::Readme->new() or croak "Failed creating readme:\n$!\n";
 	print "Exporting to README\n";
-	#Reading the documentation from itself,  pushing all the documentation into the README file
+
+	#Reading the documentation from this script,  pushing all the documentation into the README file
+	
 	$pod->parse_from_file("$0", 'README') or croak "Failed to parse README:\n$!\n";;
 	print "Readme Export Done\nPrinting Readme\n------------------------\n";
 	open README,  "<README";
+
 	#Slurp the file into memory and print it all out
+	
 	my @readme = <README>;
 	print foreach(@readme);
 }
@@ -229,6 +233,9 @@ sub mccmd {
 }
 
 sub tip {
+
+	#Open the tipfile and push any uncommented lines into a new array
+
     open TIPS, $main::config->{tipfile} or die "can't open $main::config->{tipfile}:\n$!\n";
     my @tips;
     while ( my $line = <TIPS> ) {
@@ -237,11 +244,17 @@ sub tip {
 
     close TIPS;
     die "No tips!" if ( !@tips );
+
+	#Finds a random index of the array and sends it as a message to the console
+
     my $rindex = rand( ( $#tips + 1 ) );
     mcsay("$main::config->{tipprefix} $tips[$rindex]");
 }
 
 sub test {
+
+	#This function is for printing out all the important information to see what values the script sees
+
     print "Printing config...\n";
     print "--------Raw YAML--------\n";
     print Dump $main::config;
@@ -261,6 +274,8 @@ sub test {
 {
     my ( $cmd, $say, $help, $test, $tip, $cfg );
 
+	#Setting the command line arguments
+
     GetOptions(
         'say|S'    => \$say,
         'cmd|C'    => \$cmd,
@@ -272,7 +287,7 @@ sub test {
 
 #### Global Variables ####
 
-$main::configfile = getcwd . "/mcdo/config.yml" if !$cfg
+$main::configfile = getcwd . "/mcdo/config.yml" if ( !$cfg || ! -e $cfg )
   or croak "Cannot find config file:\n$!\n";
 
 $main::config = LoadFile($main::configfile) or croak "Cannot load config file $main::configfile:\n$!\n";
@@ -286,7 +301,6 @@ $main::screen = Term::GnuScreen->new()
 $main::screen->session( $main::config->{"screentitle"} )
   or croak "Cannot set screen session:\n$!\n";
 
-$main::args = shift @ARGV if @ARGV;
 
 ####
 
